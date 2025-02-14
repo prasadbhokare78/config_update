@@ -1,0 +1,43 @@
+{
+    "schedule_time" : "0 3 * * *",
+    "sources" : [
+        {
+        "name" : "mos",
+        "database_type" : "mssql",
+        "param" : {
+            "host": "localhost",
+            "port": "1433",
+            "user": "SA",
+            "password": "iauro@100"
+            }
+        },
+        {
+            "name" : "ameyo",
+            "database_type" : "postgresql",
+            "param" : {
+                "host": "localhost",
+                "port": "5432",
+                "user": "postgres",
+                "password": "pass123"
+            }
+        },
+        {
+            "name" : "tcs_back_office",
+            "database_type" : "oracle",
+            "param" : {
+                "host": "localhost",
+                "port": "1521",
+                "user": "SYS AS SYSDBA",
+                "password": "password"
+            }
+        }
+    ],
+    "destination": {
+        "name": "s3",
+        "params": {
+            "bucket_name": "etl-data",
+            "aws_access_key_id": "AKIAEXAMPLEKEY",
+            "aws_secret_access_key": "EXAMPLESECRETKEY1234567890"
+        }
+    }
+}
