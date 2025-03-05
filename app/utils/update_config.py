@@ -28,7 +28,7 @@ class UpdateConfig():
     def update_config_files(self):
         script_dir = os.path.abspath(__file__)
         app_dir = os.path.dirname(os.path.dirname(script_dir))
-        config_dir = os.path.join(app_dir, "config", "db_config")
+        config_dir = os.path.join(app_dir, "db_config")
         os.makedirs(config_dir, exist_ok=True) 
 
         audit_logs = fetch_audit_logs(self.connector, self.datalake_source_table)
