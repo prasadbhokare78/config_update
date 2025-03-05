@@ -19,9 +19,7 @@
         "app/__pycache__": true,
         ".vscode": true,
         "__pycache__": true,
-        "dag.py": true,
-        "app/utils/datalake_audit/__pycache__": true,
-        "app/utils/datalake_audit/__init__.py": true
+        "dag.py": true
     },
     "hide-files.files": [
         "app/utils/__init__.py",
@@ -37,8 +35,6 @@
         "app/__pycache__",
         ".vscode",
         "__pycache__",
-        "dag.py",
-        "app/utils/datalake_audit/__pycache__",
-        "app/utils/datalake_audit/__init__.py"
+        "dag.py"
     ]
 }
