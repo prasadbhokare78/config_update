@@ -3,12 +3,13 @@ import time
 from app.jar_files.jar_manager import JarManager
 
 class OracleConnector:
-    def __init__(self, host, port, user, password):
+    def __init__(self, host, port, user, password, spark):
         self.service = "FREEPDB1"
         self.jdbc_url = f"jdbc:oracle:thin:@{host}:{port}/{self.service}"
         self.driver = "oracle.jdbc.OracleDriver"
         self.user = user
         self.password = password
+        self.spark = spark
         self.spark_attempts = 0
         self.read_attempts = 0
         self.max_retries = 3
@@ -17,30 +18,30 @@ class OracleConnector:
         self.port = port
         
         
-        jar_manager = JarManager(
-            required_jars=[
-                'postgresql-42.7.4.jar',
-                'ojdbc8.jar'
-            ]
-        )
+        # jar_manager = JarManager(
+        #     required_jars=[
+        #         'postgresql-42.7.4.jar',
+        #         'ojdbc8.jar'
+        #     ]
+        # )
 
-        self.jdbc_drivers_path = jar_manager.get_jars()
-        self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
+        # self.jdbc_drivers_path = jar_manager.get_jars()
+        # self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
 
-        while self.spark_attempts < self.max_retries:
-            try:
-                self.spark = SparkSession.builder \
-                    .appName("OracleDBConnection") \
-                    .config("spark.jars", self.all_jdbc_drivers_path) \
-                    .getOrCreate()
-                break
-            except Exception as e:
-                self.spark_attempts += 1
-                print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
-                if self.spark_attempts < self.max_retries:
-                    time.sleep(self.retry_delay)
-                else:
-                    raise Exception(str(e))
+        # while self.spark_attempts < self.max_retries:
+        #     try:
+        #         self.spark = SparkSession.builder \
+        #             .appName("OracleDBConnection") \
+        #             .config("spark.jars", self.all_jdbc_drivers_path) \
+        #             .getOrCreate()
+        #         break
+        #     except Exception as e:
+        #         self.spark_attempts += 1
+        #         print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
+        #         if self.spark_attempts < self.max_retries:
+        #             time.sleep(self.retry_delay)
+        #         else:
+        #             raise Exception(str(e))
                 
     def set_url(self, database):
         """Set the schema (namespace) for PostgreSQL queries."""

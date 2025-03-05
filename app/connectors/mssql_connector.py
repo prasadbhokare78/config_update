@@ -4,11 +4,12 @@ from app.jar_files.jar_manager import JarManager
 
 
 class MSSQLConnector:
-    def __init__(self, host, port, user, password, database="master"):
+    def __init__(self, host, port, user, password, spark, database="master"):
         self.jdbc_url = f"jdbc:sqlserver://{host}:{port};databaseName={database};encrypt=true;trustServerCertificate=true"
         self.driver = "com.microsoft.sqlserver.jdbc.SQLServerDriver"
         self.user = user
         self.password = password
+        self.spark = spark
         self.spark_attempts = 0
         self.read_attempts = 0
         self.max_retries = 3
@@ -16,29 +17,29 @@ class MSSQLConnector:
         self.host = host
         self.port = port
         
-        jar_manager = JarManager(
-            required_jars=[
-                'postgresql-42.7.4.jar',
-                'mssql-jdbc-12.8.1.jre11.jar'
-            ]
-        )
-        self.jdbc_drivers_path = jar_manager.get_jars()
-        self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
+        # jar_manager = JarManager(
+        #     required_jars=[
+        #         'postgresql-42.7.4.jar',
+        #         'mssql-jdbc-12.8.1.jre11.jar'
+        #     ]
+        # )
+        # self.jdbc_drivers_path = jar_manager.get_jars()
+        # self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
 
-        while self.spark_attempts < self.max_retries:
-            try:
-                self.spark = SparkSession.builder \
-                    .appName("MSSQLConnection") \
-                    .config("spark.jars", self.all_jdbc_drivers_path) \
-                    .getOrCreate()
-                break
-            except Exception as e:
-                self.spark_attempts += 1
-                print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
-                if self.spark_attempts < self.max_retries:
-                    time.sleep(self.retry_delay)
-                else:
-                    raise Exception(str(e))
+        # while self.spark_attempts < self.max_retries:
+        #     try:
+        #         self.spark = SparkSession.builder \
+        #             .appName("MSSQLConnection") \
+        #             .config("spark.jars", self.all_jdbc_drivers_path) \
+        #             .getOrCreate()
+        #         break
+        #     except Exception as e:
+        #         self.spark_attempts += 1
+        #         print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
+        #         if self.spark_attempts < self.max_retries:
+        #             time.sleep(self.retry_delay)
+        #         else:
+        #             raise Exception(str(e))
                 
     def set_url(self, database):
         """Set the schema (namespace) for PostgreSQL queries."""

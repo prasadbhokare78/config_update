@@ -5,16 +5,6 @@
     },
     "sources" : [
         {
-            "name" : "tcs_back_office",
-            "database_type" : "oracle",
-            "param" : {
-                "host": "localhost",
-                "port": "1521",
-                "user": "system",
-                "password": "oracle"
-            }
-        },
-        {
             "name" : "mos",
             "database_type" : "mssql",
             "param" : {
@@ -22,6 +12,16 @@
                 "port": "1433",
                 "user": "SA",
                 "password": "iauro7Z@qf3fT8"
+            }
+        },
+        {
+            "name" : "tcs_back_office",
+            "database_type" : "oracle",
+            "param" : {
+                "host": "localhost",
+                "port": "1521",
+                "user": "system",
+                "password": "oracle"
             }
         },
         {
@@ -33,8 +33,7 @@
                 "user": "postgres",
                 "password": "password"
             }
-        }
-           
+        }    
     ],
     "destinations" : [
         {
@@ -48,6 +47,17 @@
                 "user": "postgres",
                 "password": "password"
             }
+        }
+    ],
+    "spark_operator_args": [
+        {
+            "executor_memory": "4g",
+            "executor_cores": "4",
+            "driver_memory": "4g",
+            "min_executors": "4",
+            "max_executors": "4",
+            "initial_executors": "4",
+            "driver_cores": "4"
         }
     ]
 }
