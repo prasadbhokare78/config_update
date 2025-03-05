@@ -1,0 +1,40 @@
+{
+    "dag_config":{
+        "dag_name" : "config_update_dag",
+        "schedule_time" : "0 3 * * *"
+    },
+    "source" : [
+        {
+            "name" : "datalake_audit",
+            "database_type" : "postgresql",
+            "param" : {
+                "host": "localhost",
+                "port": "5432",
+                "database": "datalake_audit",
+                "datalake_source_table": "datalake_source_tracker",
+                "datalake_execution_log_table": "config_execution_log",
+                "user": "postgres",
+                "password": "password"
+            }
+        }
+    ],
+    "spark_operator_args": [
+        {
+            "executor_memory": "4g",
+            "executor_cores": "4",
+            "driver_memory": "4g",
+            "min_executors": "2",
+            "max_executors": "2",
+            "initial_executors": "2",
+            "driver_cores": "2"
+        }
+    ]
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 

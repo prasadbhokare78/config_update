@@ -4,7 +4,7 @@ from app.jar_files.jar_manager import JarManager
 
 
 class PostgresConnector:
-    def __init__(self, host, port, user, password, spark, database=""):
+    def __init__(self, host, port, user, password, database, spark):
         self.jdbc_url = f"jdbc:postgresql://{host}:{port}/{database}"
         self.driver = "org.postgresql.Driver"
         self.user = user
@@ -18,29 +18,29 @@ class PostgresConnector:
         self.host = host
         self.port = port
         
-        # jar_manager = JarManager(
-        #     required_jars=[
-        #         'postgresql-42.7.4.jar',
-        #     ]
-        # )
+        jar_manager = JarManager(
+            required_jars=[
+                'postgresql-42.7.4.jar',
+            ]
+        )
 
-        # self.jdbc_drivers_path = jar_manager.get_jars()
-        # self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
+        self.jdbc_drivers_path = jar_manager.get_jars()
+        self.all_jdbc_drivers_path = ",".join(self.jdbc_drivers_path)
 
-        # while self.spark_attempts < self.max_retries:
-        #     try:
-        #         self.spark = SparkSession.builder \
-        #             .appName("PostgresConnector") \
-        #             .config("spark.jars", self.all_jdbc_drivers_path) \
-        #             .getOrCreate()
-        #         break
-        #     except Exception as e:
-        #         self.spark_attempts += 1
-        #         print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
-        #         if self.spark_attempts < self.max_retries:
-        #             time.sleep(self.retry_delay)
-        #         else:
-        #             raise Exception(str(e))
+        while self.spark_attempts < self.max_retries:
+            try:
+                self.spark = SparkSession.builder \
+                    .appName("PostgresConnector") \
+                    .config("spark.jars", self.all_jdbc_drivers_path) \
+                    .getOrCreate()
+                break
+            except Exception as e:
+                self.spark_attempts += 1
+                print(f"Failed to create Spark session. Attempt {self.spark_attempts} of {self.max_retries}. Error: {e}")
+                if self.spark_attempts < self.max_retries:
+                    time.sleep(self.retry_delay)
+                else:
+                    raise Exception(str(e))
 
                 
     def set_url(self, database):
