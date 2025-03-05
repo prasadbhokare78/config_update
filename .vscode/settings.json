@@ -19,7 +19,8 @@
         "app/__pycache__": true,
         ".vscode": true,
         "__pycache__": true,
-        "dag.py": true
+        "dag.py": true,
+        "requirements.txt": true
     },
     "hide-files.files": [
         "app/utils/__init__.py",
@@ -35,6 +36,7 @@
         "app/__pycache__",
         ".vscode",
         "__pycache__",
-        "dag.py"
+        "dag.py",
+        "requirements.txt"
     ]
 }

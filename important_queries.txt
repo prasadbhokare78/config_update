@@ -1,0 +1,45 @@
+Datalake Source Tracker:
+
+CREATE TABLE public.datalake_source_tracker (
+    source_name character varying(255) NOT NULL,
+    database_type character varying(255) NOT NULL,
+    database_name character varying(255) NOT NULL,
+    table_name character varying(255) NOT NULL,
+    row_count integer NOT NULL,
+    date_column text,
+    fetch_type character varying(255),
+    hour_interval integer,
+    mode character varying(255),
+    batch_size integer,
+    created_at date,
+    updated_at date,
+    table_schema jsonb,
+    executor_memory text,
+    executor_cores integer,
+    driver_memory text,
+    min_executors integer,
+    max_executors integer,
+    initial_executors integer,
+    driver_cores integer,
+    flag boolean DEFAULT false,
+    mod_date_column text,
+    add_date_column text,
+    min_date_column text,
+    partition_upto text
+);
+
+
+Config Execution Log:
+
+CREATE TABLE public.datalake_source_tracker (
+    source_name text,
+    database_type text,
+    database_name text,
+    last_execution_date timestamp without time zone
+);
+
+
+insert into datalake_source_tracker(source_name, database_type, database_name, table_name, row_count, date_column, fetch_type, hour_interval, mode, batch_size, created_at, updated_at, flag, executor_memory, executor_cores,  driver_memory, min_executors, max_executors, initial_executors, driver_cores, add_date_column, mod_date_column, min_date_column) values ('tcs_back_office', 'oracle', 'fin', 'void_1', 10, '2025-02-21', 'batch', 4, 'append', 1000, '2025-02-26', '2025-02-26', 'true', '2g',2,'2g',2,2,2,2 , 'updated_at', 'updated_at','updated_at');
+
+
+update datalake_source_tracker set date_column = 'updated_at', fetch_type = 'batch', hour_interval = 2, mode = 'append', batch_size = 10000, created_at = '2025-02-27', updated_at = '2025-02-28', flag = 'true', executor_memory = 2, executor_cores = 2, driver_memory = 2, min_executors = 2, max_executors = 2, initial_executors = 2, driver_cores = 2, mod_date_column = 'mod_at', add_date_column = 'mod_at', min_date_column = 'min_at', partition_upto = 'day' where database_type IN ('oracle', 'mssql', 'postgresql');

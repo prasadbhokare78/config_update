@@ -1,0 +1,103 @@
+Postgres:
+
+sudo -i -u postgres psql
+
+Mssql:
+
+sqlcmd -S localhost -U SA -P 'iauro7Z@qf3fT8'
+
+Oracle:
+
+docker exec -it oracle-db bash
+sqlplus sys as sysdba
+password: oracle
+
+sqlplus sys/pass123@localhost:1521/FREEPDB1
+
+
+Airflow:
+
+airflow users create \
+    --username admin \
+    --password admin \
+    --firstname First \
+    --lastname Last \
+    --role Admin \
+    --email admin@example.com
+
+
+ALTER SESSION SET CONTAINER=FREEPDB1;
+
+CREATE USER new_user IDENTIFIED BY new_password;
+GRANT CONNECT, RESOURCE, DBA TO new_user;
+ALTER USER new_user QUOTA UNLIMITED ON USERS;
+SELECT username FROM dba_users WHERE username = 'NEW_USER';
+
+CREATE PLUGGABLE DATABASE PDB3
+ADMIN USER pdbadmin IDENTIFIED BY Password123
+ROLES = (DBA)
+FILE_NAME_CONVERT = ('/opt/oracle/oradata/FREE/pdbseed/', '/opt/oracle/oradata/FREE/PDB2/');
+
+SHOW PDBS;
+
+CREATE PLUGGABLE DATABASE PDB3
+ADMIN USER pdbadmin IDENTIFIED BY Password123
+ROLES = (DBA)
+FILE_NAME_CONVERT = ('/opt/oracle/oradata/FREE/pdbseed/', '/opt/oracle/oradata/FREE/PDB3/');
+
+ALTER PLUGGABLE DATABASE PDB2 OPEN;
+ALTER PLUGGABLE DATABASE PDB3 OPEN;
+
+insert into datalake_source_tracker(source_name, database_type, database_name, table_name, row_count, date_column, fetch_type, hour_interval, mode, batch_size, created_at, updated_at, flag, executor_memory, executor_cores,  driver_memory, min_executors, max_executors, initial_executors, driver_cores, add_date_column, mod_date_column, min_date_column) values ('tcs_back_office', 'oracle', 'fin', 'void_1', 10, '2025-02-21', 'batch', 4, 'append', 1000, '2025-02-26', '2025-02-26', 'true', '2g',2,'2g',2,2,2,2 , 'updated_at', 'updated_at','updated_at');
+
+
+update datalake_source_tracker set date_column = 'updated_at', fetch_type = 'batch', hour_interval = 2, mode = 'append', batch_size = 10000, created_at = '2025-02-27', updated_at = '2025-02-28', flag = 'true', executor_memory = 2, executor_cores = 2, driver_memory = 2, min_executors = 2, max_executors = 2, initial_executors = 2, driver_cores = 2, mod_date_column = 'mod_at', add_date_column = 'mod_at', min_date_column = 'min_at', partition_upto = 'day' where database_type IN ('oracle', 'mssql', 'postgresql');
+
+
+select * from config_execution_log c1 where last_execution_date = (select max(last_execution_date) from config_execution_log c2 where c1.source_name = c2.source_name and c1.database_name = c2.database_name and c1.database_type = c2.database_type);
+
+convert min mod add to text as column 
+convert date_col to text 
+convert table_schema to json so the store the schema 
+
+ALTER TABLE datalake_source_tracker ALTER COLUMN table_schema TYPE TEXT;
+ALTER TABLE datalake_source_tracker RENAME COLUMN date_col TO date_column;
+
+
+source_name       | mos
+database_type     | mssql
+database_name     | finance
+table_name        | show
+row_count         | 0
+date_col          | 
+fetch_type        | 
+hour_interval     | 
+mode              | 
+batch_size        | 
+created_at        | 2025-02-26
+updated_at        | 2025-02-26
+table_schema      | {"id": "int", "name": "varchar"}
+executor_memory   | 
+executor_cores    | 
+driver_memory     | 
+min_executors     | 
+max_executors     | 
+initial_executors | 
+driver_cores      | 
+flag              | f
+
+
+executor_memory, executor_cores,  driver_memory, min_executors, max_executors, initial_executors, driver_cores
+
+
+WITH base AS ( 
+    SELECT *, {add_date_column} AS final_date FROM temp_table 
+    ) 
+        SELECT *, YEAR(final_date) AS year, MONTH(final_date) AS month, DAY(final_date) AS day, HOUR(final_date) AS hour FROM base
+
+
+
+
+
+
+

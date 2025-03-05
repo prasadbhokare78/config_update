@@ -17,7 +17,7 @@ class UpdateConfig():
         self.connector = connector
         self.script_dir = os.path.abspath(__file__)
         self.app_dir = os.path.dirname(os.path.dirname(self.script_dir))
-        self.config_path = os.path.join(self.app_dir, "config", "config.json")
+        self.config_path = os.path.join(self.app_dir, "config", "config_update.json")
 
         if os.path.exists(self.config_path):
             with open(self.config_path, "r") as f:
@@ -54,7 +54,7 @@ class UpdateConfig():
                         "dag_name": f"{source_name}_{database_name}_config_dag".lower(),
                         "schedule_time": self.schedule_time
                     },
-                    "sources": {},
+                    "source": {},
                     "destination": {
                         "name": self.source_name,
                         "params": self.source_params
@@ -62,9 +62,9 @@ class UpdateConfig():
                     "table_queries": []
                 }
 
-                matching_sources = [s for s in self.config_file["sources"] if s["name"] == source_name]
+                matching_sources = [s for s in self.config_file["source"] if s["name"] == source_name]
                 if matching_sources:
-                    db_configs[key]["sources"] = {
+                    db_configs[key]["source"] = {
                         "name": matching_sources[0]["name"],
                         "database_name": database_name,
                         "database_type": matching_sources[0]["database_type"],
